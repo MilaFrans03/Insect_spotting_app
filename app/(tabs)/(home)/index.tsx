@@ -1,64 +1,25 @@
-import { View, SafeAreaView, Image, StyleSheet, Platform } from 'react-native';
-import { Link } from 'expo-router';
-import { ThemedText } from '@/components/ThemedText';
-import useMessages from '@/data/messages-get';
+import { View, Text } from 'react-native';
+import useInsects from '@/data/insects-get';
 
 export default function HomeScreen() {
-  const { data, isLoading, isError } = useMessages();
+    const { data, isLoading, isError } = useInsects();
 
-  if (isLoading || !data) {
-    return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.container}>
-          <ThemedText>Loading...</ThemedText>
-        </View>
-      </SafeAreaView>
-    );
-  }
-
+    console.log(data);
+    
+      if (isLoading) { 
+        return <View ><Text>Loading...</Text></View>;
+      }
+    
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <ThemedText type="title">Home</ThemedText>
-        {data.map((message: any) => (
-          <View key={message._id} style={styles.messageContainer}>
-            <ThemedText>{message.text}</ThemedText>
-            {message.image && (
-              <Image 
-                source={{ uri: message.image }} 
-                style={styles.messageImage} 
-                resizeMode="contain"
-              />
-            )}
-          </View>
-        ))}
-        <Link href="/post"><ThemedText>Create Message</ThemedText></Link>
-      </View>
-    </SafeAreaView>
+    
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Home</Text>
+      {data.map((insect: any) => (
+              <View key={insect.id}>
+                <Text>{insect.name}</Text>
+              </View>
+            ))}
+      
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor:"#ccc",
-    flex: 1
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  messageContainer: {
-    marginVertical: 10,
-    padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    width: '90%',
-  },
-  messageImage: {
-    width: '100%',
-    height: 200,
-    marginTop: 10,
-    borderRadius: 8,
-  },
-});
