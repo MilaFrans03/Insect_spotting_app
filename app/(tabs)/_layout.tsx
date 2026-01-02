@@ -5,11 +5,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 
 export default function TabsLayout() {
+
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    const getUserId = async () => {
+      const userId = await AsyncStorage.getItem('userId');
+      if (userId) {
+        setUserId(userId);
+      }
+    };
+    getUserId();
+  }, []);
+
+  if (!userId) {
+    return null;
+  }
+
   return (
- 
-      <Tabs screenOptions={{ headerShown: false }}>
+     <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen
   name="(home)/index"
+  initialParams={{ userId }}
   options={{
     title: 'Home',
     tabBarIcon: ({ color, size }) => (
@@ -19,7 +36,19 @@ export default function TabsLayout() {
 />
 
 <Tabs.Screen
+  name="(collection)/index"
+  initialParams={{ userId }}
+  options={{
+    title: 'Collection',
+    tabBarIcon: ({ color, size }) => (
+      <Ionicons name="home-outline" size={size} color={color} />
+    ),
+  }}
+/>
+
+<Tabs.Screen
   name="(profile)/index"
+  initialParams={{ userId }}
   options={{
     title: 'Profile',
     tabBarIcon: ({ color, size }) => (
@@ -28,15 +57,7 @@ export default function TabsLayout() {
   }}
 />
 
-<Tabs.Screen
-  name="(collection)/index"
-  options={{
-    title: 'Collection',
-    tabBarIcon: ({ color, size }) => (
-      <Ionicons name="home-outline" size={size} color={color} />
-    ),
-  }}
-/>
+
       </Tabs>
    
 
