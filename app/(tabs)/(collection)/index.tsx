@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, Image, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
 import { useCollection } from '@/data/user-collection-get';
-import { router } from 'expo-router';
-import { useRouter } from 'expo-router';
+import { router, useRouter } from 'expo-router';
 
 export default function CollectionScreen() {
     const router = useRouter(); 
@@ -30,7 +29,7 @@ export default function CollectionScreen() {
           <View style={{ marginBottom: 20, borderWidth: 1, borderRadius: 8, padding: 10 }}>
             <TouchableOpacity
             onPress={() => router.push({
-             pathname: '/(tabs)/(collection)/insectInfo/[id]', 
+             pathname: '/(stack)/insectInfo/[id]', 
              params: { id: item._id } // hier sturen we de id mee
             })}
             >
@@ -39,7 +38,6 @@ export default function CollectionScreen() {
     style={{ width: '100%', height: 200, borderRadius: 6 }}
   />
 </TouchableOpacity>
-
 
             <Text style={{ color: 'gray', fontSize: 12, marginTop: 4 }}>ID: {item._id}</Text>
             <Text style={{ marginTop: 4, fontWeight: 'bold' }}>{item.name}</Text>

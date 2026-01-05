@@ -27,6 +27,7 @@ export default function Information() {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
+      
       <Image
         source={{ uri: insect.photo_url }}
         style={{ width: '100%', height: 300, borderRadius: 8 }}
@@ -39,7 +40,7 @@ export default function Information() {
       {insect.description && <Text style={{ marginTop: 8 }}>{insect.description}</Text>}
       {insect.date_found && (
         <Text style={{ marginTop: 8, color: 'gray' }}>
-          Found on: {new Date(insect.date_found).toLocaleDateString()}
+          HEEEEEY Found on: {new Date(insect.date_found).toLocaleDateString()}
         </Text>
       )}
     </View>
