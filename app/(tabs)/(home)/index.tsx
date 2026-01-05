@@ -1,14 +1,8 @@
 import { View, Text } from 'react-native';
-import useInsects from '@/data/insects-get';
+
 
 export default function HomeScreen() {
-    const { data, isLoading, isError } = useInsects();
-
-    console.log(data);
     
-      if (isLoading) { 
-        return <View ><Text>Loading...</Text></View>;
-      }
     
   return (
     

@@ -1,25 +1,24 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState,  } from 'react';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useUserLogin from '@/data/user-login';
 
 export default function LoginScreen() {
-  const router = useRouter();
+  const router = useRouter(); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { trigger: loginUser, isMutating } = useUserLogin();
 
-  /*useEffect(() => {
-    const checkLogin = async () => {
-      const userId = await AsyncStorage.getItem('userId');
-      if (userId) router.replace('/(tabs)/(home)');
-    };
-    checkLogin();
-  }, []);*/
+
+  /////
+
+//ALLERTS DOEN NOG NIETS//
+
+//////
 
   const handleLogin = async () => {
-    if (!email || !password) return Alert.alert('Fill in all fields');
+    if (!email || !password) return Alert.alert('Fill in all fields'); 
     try {
       const data = await loginUser({ email, password });
       const userId = data?._id ?? data?.id ?? data?.user?._id;

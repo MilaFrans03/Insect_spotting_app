@@ -2,47 +2,32 @@ import React, { useState } from "react";
 import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import { API_URL } from "@/constants/Api";
+import useUserRegister from "@/data/user-post";
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const { trigger: registerUser, isMutating } = useUserRegister();
 
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleRegister = async () => {
     if (!username || !name || !email || !password) {
       return Alert.alert("Fill in all fields");
     }
 
-    setIsSubmitting(true);
-
     try {
-      const res = await fetch(`${API_URL}/users`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, name, email, password, pictures: [] }),
-      });
-
-      if (!res.ok) throw new Error(await res.text());
-
-      const data = await res.json();
+      const data = await registerUser({ username, name, email, password, pictures: [] });
       const userId = data?._id ?? data?.id ?? data?.user?._id;
 
-      if (!userId) throw new Error("No user ID returned");
+      if (!userId) return Alert.alert("Registration failed");
 
-      // Save user ID first
       await AsyncStorage.setItem("userId", userId);
-
-      // Navigate to home tabs
       router.replace("/(tabs)/(home)");
     } catch (err: any) {
       Alert.alert("Error", err?.message ?? "Registration failed");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -50,48 +35,14 @@ export default function RegisterScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Create Account</Text>
 
-      <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-        style={styles.input}
-      />
+      <TextInput placeholder="Username" value={username} onChangeText={setUsername} style={styles.input} />
+      <TextInput placeholder="Name" value={name} onChangeText={setName} style={styles.input} />
+      <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={styles.input} autoCapitalize="none" keyboardType="email-address" />
+      <TextInput placeholder="Password" value={password} onChangeText={setPassword} style={styles.input} secureTextEntry />
 
-      <TextInput
-        placeholder="Name"
-        value={name}
-        onChangeText={setName}
-        style={styles.input}
-      />
+      <Button title={isMutating ? "Creating account..." : "Create Account"} onPress={handleRegister} disabled={isMutating} />
 
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        style={styles.input}
-      />
-
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
-      />
-
-      <Button
-        title={isSubmitting ? "Creating account..." : "Create Account"}
-        onPress={handleRegister}
-        disabled={isSubmitting}
-      />
-
-      <Button
-        title="Back to Login"
-        onPress={() => router.back()}
-        disabled={isSubmitting}
-      />
+      <Button title="Back to Login" onPress={() => router.back()} disabled={isMutating} />
     </View>
   );
 }

@@ -3,16 +3,17 @@ import { useEffect, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import useUserGet from '@/data/user-get';
-import useUserPut from '@/data/user-put';
+import { useUserGet } from '@/data/user-get';
+import  useUserPut  from '@/data/user-put';
 
 export default function ProfileScreen() {
   const params = useLocalSearchParams();
   const router = useRouter();
 
-  const userId = params.userId as string;
 
-  const { data, isLoading, isError } = useUserGet(userId);
+  const { user: data, isLoading, isError } = useUserGet();
+  const userId = data?._id ?? '';
+
   const { trigger, isMutating } = useUserPut(userId);
 
   const [username, setUsername] = useState('');

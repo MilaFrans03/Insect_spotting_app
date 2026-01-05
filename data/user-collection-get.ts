@@ -1,0 +1,41 @@
+import { useState, useEffect } from 'react';
+import { useInsects } from './insects-get';
+import { useUserGet, User } from './user-get';
+import { useAddPicture } from './user-collection-post';
+import { useDeletePicture } from './user-collection-delete';
+
+export function useCollection() {
+  const { insects, isLoading: insectsLoading } = useInsects();
+  const { user, isLoading: userLoading } = useUserGet();
+  const [localUser, setLocalUser] = useState<User | null>(null);
+
+  const addPicture = useAddPicture(localUser, setLocalUser);
+  const deletePicture = useDeletePicture(localUser, setLocalUser); // ✅ hier maken we hem aan
+
+  useEffect(() => {
+    if (user) setLocalUser(user);
+  }, [user]);
+
+  const placeholderImages: Record<string, any> = {
+    '01': require('@/assets/images/insects_placeholders/01.jpg'),
+    '02': require('@/assets/images/insects_placeholders/02.jpg'),
+    '03': require('@/assets/images/insects_placeholders/03.jpg'),
+  };
+
+  const collectionData = insects.map(insect => {
+    const picture = localUser?.pictures.find(p => p.insect_id === insect._id);
+    return {
+      ...insect,
+      in_collection: picture?.in_collection ?? false,
+      photo_url: picture?.photo_url ?? insect.default_photo_url ?? placeholderImages[insect._id],
+      date_found: picture?.date_found ?? null,
+    };
+  });
+
+  return {
+    collectionData,
+    addPictureToCollection: addPicture,
+    deletePicture, // 
+    isLoading: insectsLoading || userLoading,
+  };
+}
