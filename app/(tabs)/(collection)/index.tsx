@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Text, FlatList, Image, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
+import { View, FlatList, Image, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
 import { useCollection } from '@/data/user-collection-get';
-import { router, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { ThemedText } from '@/components/ThemedText';
+import { ImageSizes } from '@/constants/ImageSizes';
 
 export default function CollectionScreen() {
-    const router = useRouter(); 
+  const router = useRouter(); 
   const { collectionData, addPictureToCollection, deletePicture, isLoading } = useCollection();
 
   if (isLoading) {
@@ -17,56 +19,52 @@ export default function CollectionScreen() {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 16 }}>
-        My Collection
-      </Text>
-
+      <ThemedText type="subtitle">My Collection</ThemedText>
 
       <FlatList
+        key="3-cols" // force re-render voor numColumns
         data={collectionData}
         keyExtractor={(item) => item._id}
+        numColumns={3}
+        columnWrapperStyle={{ justifyContent: 'space-between', marginBottom: 16 }}
         renderItem={({ item }) => (
-          <View style={{ marginBottom: 20, borderWidth: 1, borderRadius: 8, padding: 10 }}>
-            <TouchableOpacity
+          <TouchableOpacity
             onPress={() => router.push({
-             pathname: '/(stack)/insectInfo/[id]', 
-             params: { id: item._id } // hier sturen we de id mee
+              pathname: '/(stack)/insectInfo/[id]', 
+              params: { id: item._id }
             })}
-            >
-  <Image
-    source={{ uri: item.photo_url }}
-    style={{ width: '100%', height: 200, borderRadius: 6 }}
-  />
-</TouchableOpacity>
-
-            <Text style={{ color: 'gray', fontSize: 12, marginTop: 4 }}>ID: {item._id}</Text>
-            <Text style={{ marginTop: 4, fontWeight: 'bold' }}>{item.name}</Text>
-            <Text style={{ color: 'gray' }}>Rarity: {item.rarity}</Text>
-            <Text style={{ color: 'gray' }}>Season: {item.season}</Text>
-            {item.description && <Text style={{ marginTop: 4 }}>{item.description}</Text>}
+            style={{
+              flex: 1 / 3,
+              marginBottom: 16,
+              marginHorizontal: 4,
+              borderWidth: 1,
+              borderRadius: 8,
+              padding: 8,
+              alignItems: 'center',
+            }}
+          >
+             <ThemedText>{item._id}</ThemedText>
+             <ThemedText>{item.name}</ThemedText>
+            <Image
+              source={
+                typeof item.photo_url === 'string'
+                  ? { uri: item.photo_url }  // online URL (user foto)
+                  : item.photo_url           // require(...) lokaal
+              }
+              style={{
+                width: ImageSizes.thumbnail,
+                height: ImageSizes.thumbnail,
+              }}
+            />
+           
+            <ThemedText>{item.season}</ThemedText>
 
             {item.in_collection ? (
-              <>
-                {item.date_found && (
-                  <Text style={{ marginTop: 4 }}>
-                    Found on: {new Date(item.date_found).toLocaleDateString()}
-                  </Text>
-                  
-                )}
-                
-                <Button
-                  title="Delete Photo"
-                  color="red"
-                  onPress={() => deletePicture(item._id)}
-                />
-              </>
-            ) : (
-              <Button
-                title="Add Photo"
-                onPress={() => addPictureToCollection(item._id)}
-              />
-            )}
-          </View>
+  item.date_found && (
+    <ThemedText>{new Date(item.date_found).toLocaleDateString()}</ThemedText>
+  )
+) : null}
+          </TouchableOpacity>
         )}
       />
     </View>

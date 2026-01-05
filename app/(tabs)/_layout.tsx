@@ -1,8 +1,12 @@
 import { Tabs } from 'expo-router';
+import { TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
+import { CustomTabBar } from "@/components/navigation/CustomTabBar";
+import { TabShape } from "@/components/navigation/TabShape";
+
 
 export default function TabsLayout() {
 
@@ -23,26 +27,40 @@ export default function TabsLayout() {
   }
 
   return (
-     <Tabs screenOptions={{ headerShown: false }}>
+<Tabs
+  screenOptions={{
+    headerShown: false,
+    tabBarStyle: {
+      borderRadius: 20, // rounded corners
+      marginHorizontal: 10, // optional spacing from edges
+    },
+    
+  }}
+>
+
       <Tabs.Screen
   name="(home)/index"
   initialParams={{ userId }}
   options={{
-    title: 'Home',
-    tabBarIcon: ({ color, size }) => (
-      <Ionicons name="home-outline" size={size} color={color} />
-    ),
+    title: '01 Home',
+    tabBarIcon: () => null, 
+    tabBarActiveTintColor: 'white',
+    tabBarInactiveTintColor: 'black',
+    tabBarActiveBackgroundColor: 'black',   
+    tabBarInactiveBackgroundColor: 'white',
+   
   }}
 />
+
+
 
 <Tabs.Screen
   name="(collection)/index"
   initialParams={{ userId }}
   options={{
-    title: 'Collection',
-    tabBarIcon: ({ color, size }) => (
-      <Ionicons name="home-outline" size={size} color={color} />
-    ),
+    title: '02 Collection',
+    tabBarIcon: () => null,
+   
   }}
 />
 
@@ -50,16 +68,11 @@ export default function TabsLayout() {
   name="(profile)/index"
   initialParams={{ userId }}
   options={{
-    title: 'Profile',
-    tabBarIcon: ({ color, size }) => (
-      <Ionicons name="home-outline" size={size} color={color} />
-    ),
+    title: '03 Profile',
+    tabBarIcon: () => null,
   }}
 />
-
-
       </Tabs>
    
-
   );
 }

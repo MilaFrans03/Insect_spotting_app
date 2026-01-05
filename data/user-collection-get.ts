@@ -5,6 +5,7 @@ import { useAddPicture } from './user-collection-post';
 import { useDeletePicture } from './user-collection-delete';
 
 export function useCollection() {
+
   const { insects, isLoading: insectsLoading } = useInsects();
   const { user, isLoading: userLoading } = useUserGet();
   const [localUser, setLocalUser] = useState<User | null>(null);
@@ -16,6 +17,7 @@ export function useCollection() {
     if (user) setLocalUser(user);
   }, [user]);
 
+  const defaultImage = require('@/assets/images/insects_placeholders/default.jpg');
   const placeholderImages: Record<string, any> = {
     '01': require('@/assets/images/insects_placeholders/01.jpg'),
     '02': require('@/assets/images/insects_placeholders/02.jpg'),
@@ -27,7 +29,7 @@ export function useCollection() {
     return {
       ...insect,
       in_collection: picture?.in_collection ?? false,
-      photo_url: picture?.photo_url ?? insect.default_photo_url ?? placeholderImages[insect._id],
+      photo_url: picture?.photo_url ?? placeholderImages[insect._id] ?? defaultImage,
       date_found: picture?.date_found ?? null,
     };
   });
