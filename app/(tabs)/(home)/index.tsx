@@ -1,74 +1,129 @@
 import React from 'react';
-import { View, Text, FlatList, Image, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
+import { View, FlatList, Image, ActivityIndicator, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCollection } from '@/data/user-collection-get';
-import { router, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { ThemedText } from '@/components/ThemedText';
+import { ImageSizes } from '@/constants/ImageSizes';
+import { useOverlayStyles } from '@/hooks/useOverlayStyles';
+import { Divider } from '@/components/Divider';
+import { Marker } from '@/components/Marker';
+import { Dimensions } from 'react-native';
 
 export default function HomeScreen() {
     const router = useRouter(); 
-  const { collectionData, addPictureToCollection, deletePicture, isLoading } = useCollection();
+      const { collectionData, addPictureToCollection, deletePicture, isLoading } = useCollection();
+      const styles = useOverlayStyles();
+      const screenWidth = Dimensions.get('window').width;
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator />
-      </View>
-    );
-  }
+      
+      
+      const selectedSeason = "spring";
 
-  return (
-    <View style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 16 }}>
-        My Collection
-      </Text>
-
-
-      <FlatList
-        data={collectionData}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <View style={{ marginBottom: 20, borderWidth: 1, borderRadius: 8, padding: 10 }}>
-            <TouchableOpacity
-            onPress={() => router.push({
-             pathname: '/(stack)/insectInfo/[id]', 
-             params: { id: item._id } // hier sturen we de id mee
-            })}
-            >
-  <Image
-    source={{ uri: item.photo_url }}
-    style={{ width: '100%', height: 200, borderRadius: 6 }}
-  />
-</TouchableOpacity>
-
-            <Text style={{ color: 'gray', fontSize: 12, marginTop: 4 }}>ID: {item._id}</Text>
-            <Text style={{ marginTop: 4, fontWeight: 'bold' }}>{item.name}</Text>
-            <Text style={{ color: 'gray' }}>Rarity: {item.rarity}</Text>
-            <Text style={{ color: 'gray' }}>Season: {item.season}</Text>
-            {item.description && <Text style={{ marginTop: 4 }}>{item.description}</Text>}
-
-            {item.in_collection ? (
-              <>
-                {item.date_found && (
-                  <Text style={{ marginTop: 4 }}>
-                    Found on: {new Date(item.date_found).toLocaleDateString()}
-                  </Text>
-                  
-                )}
-                
-                <Button
-                  title="Delete Photo"
-                  color="red"
-                  onPress={() => deletePicture(item._id)}
-                />
-              </>
-            ) : (
-              <Button
-                title="Add Photo"
-                onPress={() => addPictureToCollection(item._id)}
-              />
-            )}
+const filteredData = collectionData.filter(item =>
+  item.season?.toLowerCase().includes(selectedSeason)
+);
+    
+      if (isLoading) {
+        return (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator />
           </View>
-        )}
-      />
+        );
+      }
+    
+      return (
+        <SafeAreaView style={{ flex: 1, padding: 16 }}>
+        <View style={{ flex: 1,  }}>
+          
+        <ThemedText type="subtitle" >WELCOME BACK, Name</ThemedText>
+
+        <View style={{ padding: 100, backgroundColor: 'red'}}>
+        <Image source={require('@/assets/images/magnifier.png')}
+        style={{
+                   // width: screenWidth / 4,
+                    //height: screenWidth / 4,
+                    transform: [{ scaleX: -1 }, { scaleY: 0.5 }],
+                  }} />
+
+        </View>
+          <View>
+          <Marker />
+          <ThemedText type="subtitle" >IN SEASON</ThemedText>
+          <Divider />
+          </View>
+
+
+    
+          <FlatList
+            key="2-cols" // force re-render voor numColumns
+            data={filteredData}
+            keyExtractor={(item) => item._id}
+            numColumns={2}
+            columnWrapperStyle={{ justifyContent: 'space-between', marginBottom: 16 }}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => router.push({
+                  pathname: '/(stack)/insectInfo/[id]', 
+                  params: { id: item._id }
+                })}
+                style={{
+                  flex: 1 / 2,
+                  marginBottom: 2,
+                  marginHorizontal: 2,
+                  paddingHorizontal: 20,
+                  alignItems: 'center',
+                }}
+              >
+                <View style={styles.root}>
+      <View>
+        <ThemedText>{item._id}</ThemedText>
+      </View>
+    
+      <View style={styles.container}>
+        <View style={styles.box1}>
+          <View style={styles.imageContainer}>
+            <Image
+              source={
+                typeof item.photo_url === 'string'
+                  ? { uri: item.photo_url }  // online URL (user foto)
+                  : item.photo_url           // require(...) lokaal
+              }
+              style={{
+                width: ImageSizes.thumbnail,
+                height: ImageSizes.thumbnail,
+              }}
+            />
+          </View>
+          <View style={styles.nameTag}>
+        
+            <ThemedText type="tag">{item.name}</ThemedText>
+           
+            </View>
+        </View>
+    
+        <View style={styles.box2}>
+            <View style={styles.wrapper}>
+          {item.in_collection ? (
+            item.date_found && (
+              <ThemedText type="side">{new Date(item.date_found).toLocaleDateString()}</ThemedText>
+            )
+          ) : null}
+    
+            </View>
+        </View>
+      </View>
+      <View>
+      <ThemedText>{item.season}</ThemedText>
+      </View>
     </View>
-  );
-}
+    
+              </TouchableOpacity>
+            )}
+          />
+    
+        </View>
+        </SafeAreaView>
+      );
+    }
+    

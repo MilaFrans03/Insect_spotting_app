@@ -127,9 +127,6 @@ export default function ProfileScreen() {
 
 </View>
 
-
-      
-
       <ThemedText>New Password</ThemedText>
       <TextInput
         value={password}

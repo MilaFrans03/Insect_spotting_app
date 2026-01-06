@@ -6,8 +6,14 @@ import { Marker } from '@/components/Marker';
 import { ThemedText } from '@/components/ThemedText';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ImageSizes } from '@/constants/ImageSizes';
+import { useState, useRef } from 'react';
+import { CameraView, useCameraPermissions } from 'expo-camera';
+
+import * as ImageManipulator from 'expo-image-manipulator'
+import { useRouter } from 'expo-router';
 
 export default function Information() {
+  const router = useRouter();
   const searchParams = useSearchParams(); // haalt de id uit de URL: /information/123
   const id = searchParams.get('id');
   const { collectionData, addPictureToCollection, deletePicture, isLoading } = useCollection();
@@ -31,6 +37,9 @@ export default function Information() {
     );
   }
 
+
+   
+  
   return (
     <SafeAreaView style={{ flex: 1, padding: 16 }}>
     <View style={{ flex: 1 }}>
@@ -64,6 +73,7 @@ export default function Information() {
             ? { uri: insect.photo_url }  // online URL (user foto)
             : insect.photo_url }
         style={{ width: ImageSizes.showcase, height: ImageSizes.showcase, borderWidth: 2, padding: 8, marginTop: 16 }}
+        
       />
                 </View> 
                 <View style={{ flex: 0.2, height: '75%', width: '2%' , backgroundColor: 'transparant', borderRightWidth:2,borderBottomWidth: 2, borderTopWidth:2, justifyContent: 'center' }}>
@@ -83,8 +93,16 @@ export default function Information() {
 
               <Button
                               title="Add Photo"
-                              onPress={() => addPictureToCollection(item._id)}
+                              onPress={() => addPictureToCollection(insect._id)}
                             />
+
+<Button
+                              title="Take Picture"
+                              onPress={() => router.push({
+                                pathname: '/cameraScreen/[id]',
+                                params: { id: insect._id }
+                              })}
+                                />
     
     </View>
      </SafeAreaView>
