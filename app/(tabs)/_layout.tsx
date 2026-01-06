@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { CustomTabBar } from "@/components/navigation/CustomTabBar";
 import { TabShape } from "@/components/navigation/TabShape";
+import { ThemedText } from '@/components/ThemedText';
 
 
 export default function TabsLayout() {
@@ -31,14 +32,19 @@ export default function TabsLayout() {
   screenOptions={{
     headerShown: false,
     tabBarStyle: {
-      borderRadius: 20, // rounded corners
-      marginHorizontal: 10, // optional spacing from edges
-      tabBarActiveTintColor: 'white',
-      tabBarIcon: () => null, 
-      tabBarInactiveTintColor: 'black',
-      tabBarActiveBackgroundColor: 'black',   
-      tabBarInactiveBackgroundColor: 'white',
+      borderRadius: 50, // rounded corners
+      marginHorizontal: 0, // optional spacing from edges
+      paddingBottom: 10,
     },
+    tabBarLabelStyle: {
+      fontFamily: 'AnonymousPro',
+      fontSize: 16,
+    },
+    tabBarIcon: () => null, 
+    tabBarActiveTintColor: 'white',
+    tabBarInactiveTintColor: 'black',
+    tabBarActiveBackgroundColor: 'black',   
+    tabBarInactiveBackgroundColor: 'white',
     
   }}
 >
@@ -48,11 +54,6 @@ export default function TabsLayout() {
   initialParams={{ userId }}
   options={{
     title: '01 Home',
-    tabBarIcon: () => null, 
-    tabBarActiveTintColor: 'white',
-    tabBarInactiveTintColor: 'black',
-    tabBarActiveBackgroundColor: 'black',   
-    tabBarInactiveBackgroundColor: 'white',
    
   }}
 />
@@ -64,7 +65,7 @@ export default function TabsLayout() {
   initialParams={{ userId }}
   options={{
     title: '02 Collection',
-    tabBarIcon: () => null,
+
    
   }}
 />
@@ -74,7 +75,7 @@ export default function TabsLayout() {
   initialParams={{ userId }}
   options={{
     title: '03 Profile',
-    tabBarIcon: () => null,
+
   }}
 />
       </Tabs>
