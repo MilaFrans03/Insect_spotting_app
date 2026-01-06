@@ -103,9 +103,4 @@ export default function CollectionScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor:"#ccc",
-    flex: 1
-  },
-});
+

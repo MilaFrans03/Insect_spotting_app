@@ -34,7 +34,8 @@ export default function TabsLayout() {
     tabBarStyle: {
       borderRadius: 50, // rounded corners
       marginHorizontal: 0, // optional spacing from edges
-      paddingBottom: 10,
+    marginVertical: 0,
+      paddingBottom: 0,
     },
     tabBarLabelStyle: {
       fontFamily: 'AnonymousPro',
