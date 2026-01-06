@@ -33,6 +33,11 @@ export default function TabsLayout() {
     tabBarStyle: {
       borderRadius: 20, // rounded corners
       marginHorizontal: 10, // optional spacing from edges
+      tabBarActiveTintColor: 'white',
+      tabBarIcon: () => null, 
+      tabBarInactiveTintColor: 'black',
+      tabBarActiveBackgroundColor: 'black',   
+      tabBarInactiveBackgroundColor: 'white',
     },
     
   }}

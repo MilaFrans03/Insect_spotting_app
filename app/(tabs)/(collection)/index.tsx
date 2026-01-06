@@ -1,13 +1,18 @@
 import React from 'react';
-import { View, FlatList, Image, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
+import { View, FlatList, Image, ActivityIndicator, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCollection } from '@/data/user-collection-get';
 import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ImageSizes } from '@/constants/ImageSizes';
+import { useOverlayStyles } from '@/hooks/useOverlayStyles';
+import { Divider } from '@/components/Divider';
+import { Marker } from '@/components/Marker';
 
 export default function CollectionScreen() {
   const router = useRouter(); 
   const { collectionData, addPictureToCollection, deletePicture, isLoading } = useCollection();
+  const styles = useOverlayStyles();
 
   if (isLoading) {
     return (
@@ -18,14 +23,19 @@ export default function CollectionScreen() {
   }
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
-      <ThemedText type="subtitle">My Collection</ThemedText>
+    <SafeAreaView style={{ flex: 1, padding: 16 }}>
+    <View style={{ flex: 1,  }}>
+      <View>
+      <Marker />
+      <ThemedText type="subtitle" >INSECTS</ThemedText>
+      <Divider />
+      </View>
 
       <FlatList
-        key="3-cols" // force re-render voor numColumns
+        key="2-cols" // force re-render voor numColumns
         data={collectionData}
         keyExtractor={(item) => item._id}
-        numColumns={3}
+        numColumns={2}
         columnWrapperStyle={{ justifyContent: 'space-between', marginBottom: 16 }}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -34,39 +44,68 @@ export default function CollectionScreen() {
               params: { id: item._id }
             })}
             style={{
-              flex: 1 / 3,
-              marginBottom: 16,
-              marginHorizontal: 4,
-              borderWidth: 1,
-              borderRadius: 8,
-              padding: 8,
+              flex: 1 / 2,
+              marginBottom: 2,
+              marginHorizontal: 2,
+              paddingHorizontal: 20,
               alignItems: 'center',
             }}
           >
-             <ThemedText>{item._id}</ThemedText>
-             <ThemedText>{item.name}</ThemedText>
-            <Image
-              source={
-                typeof item.photo_url === 'string'
-                  ? { uri: item.photo_url }  // online URL (user foto)
-                  : item.photo_url           // require(...) lokaal
-              }
-              style={{
-                width: ImageSizes.thumbnail,
-                height: ImageSizes.thumbnail,
-              }}
-            />
-           
-            <ThemedText>{item.season}</ThemedText>
+            <View style={styles.root}>
+  <View>
+    <ThemedText>{item._id}</ThemedText>
+  </View>
 
-            {item.in_collection ? (
-  item.date_found && (
-    <ThemedText>{new Date(item.date_found).toLocaleDateString()}</ThemedText>
-  )
-) : null}
+  <View style={styles.container}>
+    <View style={styles.box1}>
+      <View style={styles.imageContainer}>
+        <Image
+          source={
+            typeof item.photo_url === 'string'
+              ? { uri: item.photo_url }  // online URL (user foto)
+              : item.photo_url           // require(...) lokaal
+          }
+          style={{
+            width: ImageSizes.thumbnail,
+            height: ImageSizes.thumbnail,
+          }}
+        />
+      </View>
+      <View style={styles.nameTag}>
+    
+        <ThemedText type="tag">{item.name}</ThemedText>
+       
+        </View>
+    </View>
+
+    <View style={styles.box2}>
+        <View style={styles.wrapper}>
+      {item.in_collection ? (
+        item.date_found && (
+          <ThemedText type="side">{new Date(item.date_found).toLocaleDateString()}</ThemedText>
+        )
+      ) : null}
+
+        </View>
+    </View>
+  </View>
+  <View>
+  <ThemedText>{item.season}</ThemedText>
+  </View>
+</View>
+
           </TouchableOpacity>
         )}
       />
+
     </View>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor:"#ccc",
+    flex: 1
+  },
+});

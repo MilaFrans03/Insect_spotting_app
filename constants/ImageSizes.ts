@@ -3,6 +3,5 @@ import { Dimensions } from 'react-native';
 const screenWidth = Dimensions.get('window').width;
 export const ImageSizes = {
 
-    thumbnail: screenWidth / 3.5, 
-
+    thumbnail: screenWidth / 2.5, 
   };
