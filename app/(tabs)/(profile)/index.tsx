@@ -1,7 +1,12 @@
-import { View, Text, TextInput, Button, Alert } from 'react-native';
+import { View, Text, TextInput, Button, Alert, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Divider } from '@/components/Divider';
+import { Marker } from '@/components/Marker';
+import { ThemedText } from '@/components/ThemedText';
+
 
 import { useUserGet } from '@/data/user-get';
 import  useUserPut  from '@/data/user-put';
@@ -80,26 +85,36 @@ export default function ProfileScreen() {
     : 'Unknown';
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
-      <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 20 }}>
-        Profile
-      </Text>
+      <SafeAreaView style={{ flex: 1, padding: 16 }}>
+    <View style={{ flex: 1}}>
+      <View>
+            <Marker />
+            <ThemedText type="subtitle" >PROFILE</ThemedText>
+            <Divider />
+            </View>
 
-      <Text>Username</Text>
+<View style={{ flexDirection: "row", alignItems: 'center' }}> 
+
+  <View>
+
+<Image source={require('@/assets/images/insects_placeholders/default.jpg')} style={{ width: 150, height: 150, marginRight: 16 }} />
+    </View>
+  <View>
+  <ThemedText>Username</ThemedText>
       <TextInput
         value={username}
         onChangeText={setUsername}
         style={{ borderWidth: 1, padding: 8, marginBottom: 12 }}
       />
 
-      <Text>Name</Text>
+      <ThemedText>Name</ThemedText>
       <TextInput
         value={name}
         onChangeText={setName}
         style={{ borderWidth: 1, padding: 8, marginBottom: 12 }}
       />
 
-      <Text>Email</Text>
+      <ThemedText>Email</ThemedText>
       <TextInput
         value={email}
         onChangeText={setEmail}
@@ -108,7 +123,14 @@ export default function ProfileScreen() {
         style={{ borderWidth: 1, padding: 8, marginBottom: 12 }}
       />
 
-      <Text>New Password</Text>
+</View>
+
+</View>
+
+
+      
+
+      <ThemedText>New Password</ThemedText>
       <TextInput
         value={password}
         onChangeText={setPassword}
@@ -117,15 +139,47 @@ export default function ProfileScreen() {
         style={{ borderWidth: 1, padding: 8, marginBottom: 12 }}
       />
 
-      <Text style={{ fontSize: 12, color: 'gray', marginBottom: 20 }}>
+      <ThemedText style={{ fontSize: 12, color: 'gray', marginBottom: 20 }}>
         Account created on: {createdAtFormatted}
-      </Text>
+      </ThemedText>
 
-      <Button title="Save changes" onPress={handleSave} />
+   
 
       <View style={{ marginTop: 20 }}>
-        <Button title="Log out" color="red" onPress={handleLogout} />
-      </View>
+  <TouchableOpacity
+    onPress={handleSave}
+    style={{
+      backgroundColor: 'black',
+      paddingVertical: 14,
+      paddingHorizontal: 24,
+      borderRadius: 0,       // 0 = perfect rechthoekig
+      alignItems: 'center',
+    }}
+  >
+    <ThemedText style={{ color: 'white'}}>
+    Save changes
+    </ThemedText>
+  </TouchableOpacity>
+</View>
+
+<View style={{ marginTop: 20 }}>
+  <TouchableOpacity
+    onPress={handleLogout}
+    style={{
+      backgroundColor: 'black',
+      paddingVertical: 14,
+      paddingHorizontal: 24,
+      borderRadius: 0,       // 0 = perfect rechthoekig
+      alignItems: 'center',
+    }}
+  >
+    <ThemedText style={{ color: 'white'}}>
+      Log out
+    </ThemedText>
+  </TouchableOpacity>
+</View>
+
     </View>
+    </SafeAreaView>
   );
 }
