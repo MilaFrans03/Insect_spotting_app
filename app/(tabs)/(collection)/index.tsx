@@ -62,7 +62,7 @@ export default function CollectionScreen() {
         <Image
           source={
             typeof item.photo_url === 'string'
-              ? { uri: item.photo_url }  // online URL (user foto)
+              ? { uri: item.photo_url }  
               : item.photo_url           // require(...) lokaal
           }
           style={{

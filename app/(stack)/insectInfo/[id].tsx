@@ -1,4 +1,4 @@
-import { View, Text, Image, Button, ActivityIndicator } from 'react-native';
+import { View, Text, Image, Button, ActivityIndicator,TouchableOpacity } from 'react-native';
 import { useCollection } from '@/data/user-collection-get';
 import { useSearchParams } from 'expo-router/build/hooks';
 import { Divider } from '@/components/Divider';
@@ -85,24 +85,25 @@ export default function Information() {
                 </View>
               </View>
 
-              <Button
-              title="Delete Photo"
-              color="red"
-              onPress={() => deletePicture(insect._id)}
-              />
-
-              <Button
-                              title="Add Photo"
-                              onPress={() => addPictureToCollection(insect._id)}
-                            />
-
-<Button
-                              title="Take Picture"
-                              onPress={() => router.push({
-                                pathname: '/cameraScreen/[id]',
-                                params: { id: insect._id }
-                              })}
-                                />
+<View style={{ marginTop: 20 }}>
+  <TouchableOpacity
+   onPress={() => router.push({
+    pathname: '/cameraScreen/[id]',
+    params: { id: insect._id }
+  })}
+    style={{
+      backgroundColor: 'black',
+      paddingVertical: 14,
+      paddingHorizontal: 24,
+      borderRadius: 0,       // 0 = perfect rechthoekig
+      alignItems: 'center',
+    }}
+  >
+    <ThemedText style={{ color: 'white'}}>
+    Take Picture
+    </ThemedText>
+  </TouchableOpacity>
+</View>
     
     </View>
      </SafeAreaView>
