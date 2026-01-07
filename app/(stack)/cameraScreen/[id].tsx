@@ -1,4 +1,4 @@
-import { View, Text, Image, Button, ActivityIndicator } from 'react-native';
+import { View, Text, Image, Button, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useSearchParams } from 'expo-router/build/hooks';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useRef, useEffect } from 'react';
@@ -8,6 +8,8 @@ import { useRouter } from 'expo-router';
 import { useUserGet } from '@/data/user-get';
 import { useAddPicture } from '@/data/user-collection-post';
 import { User } from '@/data/user-get';
+import { ThemedText } from '@/components/ThemedText';
+
 
 export default function CameraScreen() {
   const router = useRouter();
@@ -74,7 +76,7 @@ export default function CameraScreen() {
       const manipulatedImage = await ImageManipulator.manipulateAsync(
         photo.uri,
         [{ resize: { width: 600 } }],
-        { compress: 1, format: ImageManipulator.SaveFormat.JPEG, base64: true }
+        { compress: 0.3, format: ImageManipulator.SaveFormat.JPEG, base64: true }
       );
 
       if (!manipulatedImage.base64) {
@@ -96,7 +98,7 @@ export default function CameraScreen() {
     console.log('Adding photo to collection for insectId:', id);
     try {
       await addTakenPictureToCollection(id, image);
-      console.log('✅ Photo successfully added');
+      console.log('Photo successfully added');
       setImage(null); // reset preview
     } catch (err) {
       console.error('Error adding photo to collection:', err);
@@ -121,13 +123,44 @@ export default function CameraScreen() {
         style={{
           position: 'absolute',
           bottom: 40,
+          marginVertical: 10,
           width: '100%',
           alignItems: 'center',
         }}
       >
-        <Button title="Take Picture" onPress={takePicture} disabled={!cameraReady} />
-        <View style={{ height: 12 }} />
-        <Button title="Cancel" onPress={() => router.back()} />
+
+        <TouchableOpacity
+          onPress={takePicture} disabled={!cameraReady}
+    
+            style={{
+              backgroundColor: 'black',
+              paddingVertical: 14,
+              paddingHorizontal: 24,
+              borderRadius: 0,       // 0 = perfect rechthoekig
+              alignItems: 'center',
+            }}
+          >
+            <ThemedText style={{ color: 'white'}}>
+            Take Picture
+            </ThemedText>
+          </TouchableOpacity>
+          <View style={{ height: 12 }} />
+          <TouchableOpacity
+          onPress={() => router.back()}
+    
+            style={{
+              backgroundColor: 'black',
+              paddingVertical: 14,
+              paddingHorizontal: 24,
+              borderRadius: 0,       // 0 = perfect rechthoekig
+              alignItems: 'center',
+            }}
+          >
+            <ThemedText style={{ color: 'white'}}>
+            Cancel
+            </ThemedText>
+          </TouchableOpacity>
+
       </View>
 
       {/* Preview overlay */}
@@ -137,18 +170,28 @@ export default function CameraScreen() {
             position: 'absolute',
             top: 50,
             alignSelf: 'center',
-            width: 220,
-            height: 240,
-            borderWidth: 2,
-            borderColor: 'white',
+            width: '95%',
+            height: '75%',
             backgroundColor: 'black',
             justifyContent: 'center',
             alignItems: 'center',
             padding: 4,
           }}
         >
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-          <Button title="Add to Collection" onPress={handleAddPhoto} />
+          <Image source={{ uri: image }} style={{ width: '95%', height:'75%' }} />
+          <TouchableOpacity
+          onPress={handleAddPhoto}
+    
+            style={{
+              top: 24,    // 0 = perfect rechthoekig
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ThemedText style={{ color: 'white'}}>
+            Add to collection
+            </ThemedText>
+          </TouchableOpacity>
         </View>
       )}
     </SafeAreaView>
