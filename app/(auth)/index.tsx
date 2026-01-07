@@ -38,14 +38,24 @@ export default function LoginScreen() {
       <Text style={styles.title}>Login</Text>
       <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={styles.input} autoCapitalize="none" />
       <TextInput placeholder="Password" value={password} onChangeText={setPassword} style={styles.input} secureTextEntry />
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isMutating}>
-        <Text style={styles.buttonText}>{isMutating ? 'Logging in...' : 'Login'}</Text>
-      </TouchableOpacity>
+    
 
-      <TouchableOpacity style={styles.registerButton} onPress={() => router.push('/(auth)/register')}>
-        <Text style={styles.registerText}>Don't have an account? Create one</Text>
-      </TouchableOpacity>
-      
+      <View style={{ marginTop: 20 }}>
+  <TouchableOpacity
+ onPress={handleLogin} disabled={isMutating}
+    style={{
+      backgroundColor: 'black',
+      paddingVertical: 14,
+      paddingHorizontal: 24,
+      borderRadius: 0,       // 0 = perfect rechthoekig
+      alignItems: 'center',
+    }}
+  >
+      <ThemedText style={{ color: 'white'}}>
+      Log In
+      </ThemedText>
+    </TouchableOpacity>
+  </View>
       <View style={{ marginTop: 20 }}>
   <TouchableOpacity
  onPress={() => router.push('/(auth)/register')}

@@ -30,6 +30,14 @@ export default function Layout() {
           color: 'black',              // optional: override color
         },
           }} />
+          <Stack.Screen name="(auth)" options={{
+         headerShown: false,
+          }} />
+
+<Stack.Screen name="(auth)/index.tsx" options={{
+         headerShown: false,
+          }} />
+
 
     </Stack>
   );

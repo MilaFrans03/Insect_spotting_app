@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import useUserRegister from "@/data/user-post";
+import { ThemedText } from '@/components/ThemedText';
+
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -40,9 +42,41 @@ export default function RegisterScreen() {
       <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={styles.input} autoCapitalize="none" keyboardType="email-address" />
       <TextInput placeholder="Password" value={password} onChangeText={setPassword} style={styles.input} secureTextEntry />
 
-      <Button title={isMutating ? "Creating account..." : "Create Account"} onPress={handleRegister} disabled={isMutating} />
+    
+          <View style={{ marginTop: 20 }}>
+      <TouchableOpacity
+    onPress={handleRegister} disabled={isMutating}
+        style={{
+          backgroundColor: 'black',
+          paddingVertical: 14,
+          paddingHorizontal: 24,
+          borderRadius: 0,       // 0 = perfect rechthoekig
+          alignItems: 'center',
+        }}
+      >
+          <ThemedText style={{ color: 'white'}}>
+          Create Account
+          </ThemedText>
+        </TouchableOpacity>
+      </View>
+          <View style={{ marginTop: 20 }}>
+      <TouchableOpacity
+     onPress={() => router.back()} disabled={isMutating}
+        style={{
+          backgroundColor: 'black',
+          paddingVertical: 14,
+          paddingHorizontal: 24,
+          borderRadius: 0,       // 0 = perfect rechthoekig
+          alignItems: 'center',
+        }}
+      >
+          <ThemedText style={{ color: 'white'}}>
+          Back to Login
+          </ThemedText>
+        </TouchableOpacity>
+      </View>
+    
 
-      <Button title="Back to Login" onPress={() => router.back()} disabled={isMutating} />
     </View>
   );
 }
@@ -50,5 +84,5 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "center", padding: 20 },
   title: { fontSize: 24, fontWeight: "bold", marginBottom: 20, textAlign: "center" },
-  input: { borderWidth: 1, borderColor: "#aaa", padding: 10, marginBottom: 12, borderRadius: 5 },
+  input: { borderWidth: 1, padding: 8, marginBottom: 12 },
 });

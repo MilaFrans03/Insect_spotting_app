@@ -30,9 +30,10 @@ export const useOverlayStyles = () => {
 
       imageContainer: {
         position: "relative",
-  
-        //borderWidth: 2,
-        width: screenWidth/2,
+  padding: 4,
+        borderBottomWidth: 2,
+        borderLeftWidth: 2,
+        width: screenWidth/2.5,
        // height: screenWidth/2.55,
         
       },
@@ -58,7 +59,8 @@ export const useOverlayStyles = () => {
         //borderLeftWidth: 2,
         },
         wrapper: {
-           left:-10,
+           left:-14,
+           bottom:10,
             width:'20%',
             textAlign:'right',
              backgroundColor:'transparent'

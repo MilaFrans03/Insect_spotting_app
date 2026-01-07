@@ -66,17 +66,13 @@ export default function ProfileScreen() {
   };
 
   const handleLogout = async () => {
-    // 1️⃣ Clear user info
+    // Clear stored user info
     await AsyncStorage.removeItem('userId');
   
-    // 2️⃣ Navigate to login
+    // Go to login screen and reset history
     router.replace('/');
-  
-    // 3️⃣ Force a reload (works on web)
-    if (typeof window !== 'undefined') {
-      window.location.href = '/';
-    }
   };
+  
   
   
 

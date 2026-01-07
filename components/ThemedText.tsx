@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
   },
   side: {
     lineHeight: 0,
-    fontSize: 12,
-    color: 'black',
+    fontSize: 17,
+    color: 'white',
     fontFamily: 'AnonymousPro',
   },
   tag: {

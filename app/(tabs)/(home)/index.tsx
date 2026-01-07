@@ -25,7 +25,7 @@ export default function HomeScreen() {
       const userId = data?._id ?? '';
 
       
-      const selectedSeason = "spring";
+      const selectedSeason = "winter";
 
 const filteredData = collectionData.filter(item =>
   item.season?.toLowerCase().includes(selectedSeason)
