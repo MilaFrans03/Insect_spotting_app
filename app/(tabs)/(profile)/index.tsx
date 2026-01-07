@@ -70,7 +70,7 @@ export default function ProfileScreen() {
     await AsyncStorage.removeItem('userId');
   
     // Go to login screen and reset history
-    router.replace('/');
+    router.replace('../(auth)/login');
   };
   
   
@@ -93,7 +93,7 @@ export default function ProfileScreen() {
 
   <View>
 
-<Image source={require('@/assets/images/insects_placeholders/default.jpg')} style={{ width: 150, height: 150, marginRight: 16 }} />
+<Image source={require('@/assets/images/insects_placeholders/05.png')} style={{ width: 150, height: 150, marginRight: 16 }} />
     </View>
   <View>
   <ThemedText>Username</ThemedText>

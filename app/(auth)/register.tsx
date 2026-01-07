@@ -27,7 +27,7 @@ export default function RegisterScreen() {
       if (!userId) return Alert.alert("Registration failed");
 
       await AsyncStorage.setItem("userId", userId);
-      router.replace("/(tabs)/(home)");
+      router.replace("./(tabs)/(home)");
     } catch (err: any) {
       Alert.alert("Error", err?.message ?? "Registration failed");
     }

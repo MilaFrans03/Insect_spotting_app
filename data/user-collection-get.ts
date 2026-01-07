@@ -17,11 +17,16 @@ export function useCollection() {
     if (user) setLocalUser(user);
   }, [user]);
 
-  const defaultImage = require('@/assets/images/insects_placeholders/default.jpg');
+  const defaultImage = require('@/assets/images/insects_placeholders/01.png');
   const placeholderImages: Record<string, any> = {
-    '01': require('@/assets/images/insects_placeholders/01.jpg'),
-    '02': require('@/assets/images/insects_placeholders/02.jpg'),
-    '03': require('@/assets/images/insects_placeholders/03.jpg'),
+    '01': require('@/assets/images/insects_placeholders/01.png'),
+    '02': require('@/assets/images/insects_placeholders/02.png'),
+    '03': require('@/assets/images/insects_placeholders/03.png'),
+    '04': require('@/assets/images/insects_placeholders/04.png'),
+    '05': require('@/assets/images/insects_placeholders/05.png'),
+    '06': require('@/assets/images/insects_placeholders/06.png'),
+    '07': require('@/assets/images/insects_placeholders/07.png'),
+    '08': require('@/assets/images/insects_placeholders/08.png'),
   };
 
   const collectionData = insects.map(insect => {
