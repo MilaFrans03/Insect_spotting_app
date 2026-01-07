@@ -1,22 +1,29 @@
 import React from 'react';
-import { View, FlatList, Image, ActivityIndicator, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, FlatList, Image, ActivityIndicator, Button, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCollection } from '@/data/user-collection-get';
-import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ImageSizes } from '@/constants/ImageSizes';
 import { useOverlayStyles } from '@/hooks/useOverlayStyles';
 import { Divider } from '@/components/Divider';
 import { Marker } from '@/components/Marker';
 import { Dimensions } from 'react-native';
+import { useUserGet } from '@/data/user-get';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+
+
+
 
 export default function HomeScreen() {
+   const params = useLocalSearchParams();
     const router = useRouter(); 
       const { collectionData, addPictureToCollection, deletePicture, isLoading } = useCollection();
       const styles = useOverlayStyles();
       const screenWidth = Dimensions.get('window').width;
 
-      
+      const {user: data} = useUserGet();
+      const userId = data?._id ?? '';
+
       
       const selectedSeason = "spring";
 
@@ -35,16 +42,15 @@ const filteredData = collectionData.filter(item =>
       return (
         <SafeAreaView style={{ flex: 1, padding: 16 }}>
         <View style={{ flex: 1,  }}>
+        <ScrollView style={{ flex: 1 }}>
           
-        <ThemedText type="subtitle" >WELCOME BACK, Name</ThemedText>
+        <ThemedText type="subtitle" >WELCOME BACK, {data.name}!</ThemedText>
+    
 
-        <View style={{ padding: 100, backgroundColor: 'red'}}>
-        <Image source={require('@/assets/images/magnifier.png')}
-        style={{
-                   // width: screenWidth / 4,
-                    //height: screenWidth / 4,
-                    transform: [{ scaleX: -1 }, { scaleY: 0.5 }],
-                  }} />
+        <View style={{ }}>
+        <Image source={require('@/assets/images/HomeScreen.png')}
+        style={{right: 20,
+                 width:'110%' }} />
 
         </View>
           <View>
@@ -121,7 +127,7 @@ const filteredData = collectionData.filter(item =>
               </TouchableOpacity>
             )}
           />
-    
+       </ScrollView>
         </View>
         </SafeAreaView>
       );
